@@ -8,7 +8,7 @@ import SetTimer from './setTimer';
 import Failed from './failed';
 
 function App() {
-  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
+  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'hatched' | 'alive' | 'focus' | 'dead'> ('hatched');
 
   useEffect(() => {
     chrome.storage.local.get("healthSave", (data) => {

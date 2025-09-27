@@ -10,6 +10,7 @@ export default function NameInput({ onNameChange }: NameInputProps) {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log('Submitted name:', name);
+    chrome.storage.local.set({ creatureState: 'alive' });
 
     if (name.trim() !== "") {
       const trimmed = name.trim();
