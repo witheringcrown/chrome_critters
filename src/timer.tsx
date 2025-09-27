@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+// Timer component
 export default function Timer() {
     const [time, setTime] = useState(15 * 60); // 15 minutes in seconds
     const [isActive, setIsActive] = useState(false);
@@ -7,36 +8,13 @@ export default function Timer() {
     useEffect(() => {
         let interval: number | undefined;
 
-    if (isActive && time > 0) {
-      interval = window.setInterval(() => {
-        setTime((prev) => prev - 1);
-      }, 1000);
-    }
         if (isActive && time > 0) {
         interval = window.setInterval(() => {
             setTime((prev) => prev - 1);
         }, 1000);
         }
-
         return () => clearInterval(interval);
-    }, [isActive, time])
-    
-    useEffect(() => {
-    if (!isActive) return;
-
-    const listener = (message: any) => {
-        if (message.event === "TAB_SWITCHED") {
-            //Do smthing when tab is switched
-        }
-    };
-
-    chrome.runtime.onMessage.addListener(listener);
-
-    // Cleanup
-    return () => {
-      chrome.runtime.onMessage.removeListener(listener);
-    };
-  }, [isActive]);
+    }, [isActive, time]);
 
     // calculate time
     const hours = Math.floor(time / 3600);

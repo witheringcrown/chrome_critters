@@ -5,7 +5,6 @@ import dead from './assets/dead.gif';
 import egg from './assets/egg.gif';
     
 type LilGuyProps = {
-    health: number;
     creatureState: 'ready' | 'egg' | 'alive' | 'dead';
     /** Called when the user requests to lower health. Optional for display-only usage. */
     onLowerHealth?: (amount?: number) => void;

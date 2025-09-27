@@ -12,6 +12,9 @@ function App() {
     chrome.storage.local.get("healthSave", (data) => {
       if (data.healthSave !== undefined && data.healthSave !== null) {
         setHealth(data.healthSave);
+        if (data.healthSave === 0) {
+          setCreatureState('dead');
+        }
       }
     });
     chrome.storage.local.get("creatureState", (data) => {
@@ -21,7 +24,7 @@ function App() {
     });
   }, []);
 
-  const lowerHealth = (amount = 10) => {
+  function lowerHealth(amount = 10) {
     const newHealth = Math.max(0, health - amount);
     setHealth(newHealth);
     if (newHealth === 0) {
@@ -34,8 +37,7 @@ function App() {
   return (
     <>
       <Namebar />
-      <LilGuy health={health} onLowerHealth={lowerHealth} creatureState={creatureState}/>
-      
+      <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
       <Timer />
     </>
   )
