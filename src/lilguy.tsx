@@ -1,6 +1,8 @@
+/// <reference types="chrome"/>
+
 import mon from './assets/creature.gif';
 import dead from './assets/dead.gif';
-
+    
 type LilGuyProps = {
     health: number;
     /** Called when the user requests to lower health. Optional for display-only usage. */
