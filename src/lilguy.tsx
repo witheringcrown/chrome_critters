@@ -14,7 +14,8 @@ function LilGuy({ health, onLowerHealth }: LilGuyProps) {
 
     function handleLower() {
         chrome.runtime.sendMessage({ event: "onSwitch" });
-        if (onLowerHealth) onLowerHealth(10);
+        console.log("Lowering health");
+        if (onLowerHealth) onLowerHealth(100);
     }
 
     return (
