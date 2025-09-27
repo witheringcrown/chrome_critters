@@ -15,4 +15,9 @@ chrome.runtime.onMessage.addListener(data => {
 function handleOnSwitch(prefs) {
     console.log(prefs);
     chrome.storage.local.set(prefs);
-}
+};
+
+// Detect tab switching
+chrome.tabs.onActivated.addListener(() => {
+  chrome.runtime.sendMessage({ type: "TAB_SWITCHED" });
+});
