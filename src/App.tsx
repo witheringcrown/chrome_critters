@@ -4,15 +4,15 @@ import LilGuy from './lilguy'
 import NameInput from './nameInput'
 import Timer from './timer'
 import Namebar from './namebar';
+import SetTimer from './setTimer';
+import Failed from './failed';
 
 function App() {
-  const [health, setHealth] = useState(100);
-  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'alive' | 'dead'>('ready');
+  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
 
   useEffect(() => {
     chrome.storage.local.get("healthSave", (data) => {
       if (data.healthSave !== undefined && data.healthSave !== null) {
-        setHealth(data.healthSave);
         if (data.healthSave === 0) {
           setCreatureState('dead');
         }
@@ -26,62 +26,31 @@ function App() {
     
   }, []);
 
-  function lowerHealth(amount = 10) {
-    const newHealth = Math.max(0, health - amount);
-    setHealth(newHealth);
-    if (newHealth === 0) {
-      setCreatureState('dead');
-      chrome.storage.local.set({ creatureState: 'dead' });
-    }
-    chrome.storage.local.set({ healthSave: newHealth });
-  }
+  // We don't need this rn but we may later?
+  // function lowerHealth(amount = 10) {
+  //   const newHealth = Math.max(0, health - amount);
+  //   setHealth(newHealth);
+  //   if (newHealth === 0) {
+  //     setCreatureState('dead');
+  //     chrome.storage.local.set({ creatureState: 'dead' });
+  //   }
+  //   chrome.storage.local.set({ healthSave: newHealth });
+  // }
 
 
   const handleNameChange = (newName: string) => {
     chrome.storage.local.set({ creatureName: newName });
   };
 
-  if (creatureState === 'ready') {
-    return (
-      <>
-        <NameInput onNameChange={handleNameChange}/> 
-        <Namebar />
-        <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
-        <button onClick={() => setCreatureState('egg')}>Go to egg</button>
-      </>
-    );
-  }
-  else if (creatureState === 'egg') {
-
-    return (
+  return (
     <>
-      <Namebar />
-      <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
-      <Timer />
-      <button onClick={() => setCreatureState('alive')}>Go to alive</button>
+      {creatureState === 'hatched' ? <NameInput onNameChange={handleNameChange}/> : <Namebar />}
+      <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : 'mon'}/>
+      {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer /> : null}
+      {creatureState === 'focus' || creatureState === 'egg' ? <Timer /> : null}
+      {creatureState === 'dead' ? <Failed /> : null}
     </>
-  )
-  }
-  else if (creatureState === 'alive') {
-    return (
-    <>
-      <Namebar />
-      <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
-      <Timer />
-      <button onClick={() => setCreatureState('dead')}>Go to dead</button>
-
-    </>
-  )
-  }
-  else { //Dead
-    return (
-      <>
-        <Namebar />
-        <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
-        <button onClick={() => setCreatureState('ready')}>Go to ready</button>
-      </>
-    );
-  }
+  );
   
 }
 
