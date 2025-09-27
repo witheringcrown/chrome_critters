@@ -6,6 +6,7 @@ import Timer from './timer'
 
 function App() {
   const [health, setHealth] = useState(100);
+  const [name, setName] = useState<string>('');
   const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'alive' | 'dead'>('ready');
 
   useEffect(() => {
@@ -34,9 +35,14 @@ function App() {
     chrome.storage.local.set({ healthSave: newHealth });
   }
 
+  const handleNameChange = (newName: string) => {
+    setName(newName);
+    chrome.storage.local.set({ creatureName: newName });
+  }
+
   return (
     <>
-      <Namebar />
+      <Namebar onNameChange={handleNameChange}/>
       <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
       <Timer />
     </>
