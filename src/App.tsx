@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css'
 import LilGuy from './lilguy'
 import Namebar from './namebar'
+import Timer from './timer'
 
 function App() {
   const [health, setHealth] = useState(100);
@@ -14,6 +15,7 @@ function App() {
     <>
       <Namebar />
       <LilGuy health={health} onLowerHealth={lowerHealth} />
+      <Timer />
     </>
   )
 }
