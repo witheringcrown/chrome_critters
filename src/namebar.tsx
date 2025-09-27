@@ -1,12 +1,15 @@
-type NamebarProps = {
-    onNameChange?: (newName: string) => void;
-};
+import { useEffect, useState } from "react";
 
-function Namebar({ onNameChange }: NamebarProps) {
-    return (
-      <p>Name</p>
+export default function Namebar() {
+  const [name, setName] = useState<string>("");
 
-    );
+  useEffect(() => {
+    chrome.storage.local.get("creatureName", (result) => {
+      if (result.creatureName) {
+        setName(result.creatureName);
+      }
+    });
+  }, []);
+
+  return <h2>Name: {name || "No name yet"}</h2>;
 }
-
-export default Namebar;

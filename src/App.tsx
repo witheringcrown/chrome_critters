@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import LilGuy from './lilguy'
-import Namebar from './namebar'
+import NameInput from './nameInput'
 import Timer from './timer'
+import Namebar from './namebar';
 
 function App() {
   const [health, setHealth] = useState(100);
-  const [name, setName] = useState<string>('');
   const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'alive' | 'dead'>('ready');
 
   useEffect(() => {
@@ -23,6 +23,7 @@ function App() {
         setCreatureState(data.creatureState);
       }
     });
+    
   }, []);
 
   function lowerHealth(amount = 10) {
@@ -35,18 +36,53 @@ function App() {
     chrome.storage.local.set({ healthSave: newHealth });
   }
 
-  const handleNameChange = (newName: string) => {
-    setName(newName);
-    chrome.storage.local.set({ creatureName: newName });
-  }
 
-  return (
+  const handleNameChange = (newName: string) => {
+    chrome.storage.local.set({ creatureName: newName });
+  };
+
+  if (creatureState === 'ready') {
+    return (
+      <>
+        <NameInput onNameChange={handleNameChange}/> 
+        <Namebar />
+        <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
+        <button onClick={() => setCreatureState('egg')}>Go to egg</button>
+      </>
+    );
+  }
+  else if (creatureState === 'egg') {
+
+    return (
     <>
-      <Namebar onNameChange={handleNameChange}/>
+      <Namebar />
       <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
       <Timer />
+      <button onClick={() => setCreatureState('alive')}>Go to alive</button>
     </>
   )
+  }
+  else if (creatureState === 'alive') {
+    return (
+    <>
+      <Namebar />
+      <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
+      <Timer />
+      <button onClick={() => setCreatureState('dead')}>Go to dead</button>
+
+    </>
+  )
+  }
+  else { //Dead
+    return (
+      <>
+        <Namebar />
+        <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
+        <button onClick={() => setCreatureState('ready')}>Go to ready</button>
+      </>
+    );
+  }
+  
 }
 
 export default App
