@@ -5,16 +5,38 @@ export default function Timer() {
     const [isActive, setIsActive] = useState(false);
 
     useEffect(() => {
-    let interval: number | undefined;
+        let interval: number | undefined;
 
     if (isActive && time > 0) {
       interval = window.setInterval(() => {
         setTime((prev) => prev - 1);
       }, 1000);
     }
+        if (isActive && time > 0) {
+        interval = window.setInterval(() => {
+            setTime((prev) => prev - 1);
+        }, 1000);
+        }
 
-    return () => clearInterval(interval);
-    }, [isActive, time]);
+        return () => clearInterval(interval);
+    }, [isActive, time])
+    
+    useEffect(() => {
+    if (!isActive) return;
+
+    const listener = (message: any) => {
+        if (message.event === "TAB_SWITCHED") {
+            //Do smthing when tab is switched
+        }
+    };
+
+    chrome.runtime.onMessage.addListener(listener);
+
+    // Cleanup
+    return () => {
+      chrome.runtime.onMessage.removeListener(listener);
+    };
+  }, [isActive]);
 
     // calculate time
     const hours = Math.floor(time / 3600);
