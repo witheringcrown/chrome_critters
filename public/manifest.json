@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Project Digimon",
+    "name": "Chrome Creatures",
     "version": "0.1",
     "description": "A lil guy that dies if you stop focusing.",
     "permissions": ["alarms", "storage", "tabs"],
