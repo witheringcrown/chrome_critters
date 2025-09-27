@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "Project Digimon",
+    "version": "0.1",
+    "description": "A lil guy that dies if you stop focusing.",
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": "image.png"
+    }
+}
