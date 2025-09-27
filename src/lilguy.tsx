@@ -11,6 +11,7 @@ function LilGuy({ health, onLowerHealth }: LilGuyProps) {
     const currentImage = health > 0 ? mon : dead;
 
     function handleLower() {
+        chrome.runtime.sendMessage({ event: "onSwitch" });
         if (onLowerHealth) onLowerHealth(10);
     }
 

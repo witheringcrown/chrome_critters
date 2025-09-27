@@ -3,7 +3,7 @@
     "name": "Project Digimon",
     "version": "0.1",
     "description": "A lil guy that dies if you stop focusing.",
-    "permissions": ["alarms"],
+    "permissions": ["alarms", "storage"],
     "background": {
         "service_worker": "background.js"
     },
