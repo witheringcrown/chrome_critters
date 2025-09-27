@@ -2,16 +2,17 @@
 
 import mon from './assets/creature.gif';
 import dead from './assets/dead.gif';
+import egg from './assets/egg.gif';
     
 type LilGuyProps = {
     health: number;
+    creatureState: 'ready' | 'egg' | 'alive' | 'dead';
     /** Called when the user requests to lower health. Optional for display-only usage. */
     onLowerHealth?: (amount?: number) => void;
-    setHealth: (health: number) => void;
 };
 
-function LilGuy({ health, onLowerHealth }: LilGuyProps) {
-    const currentImage = health > 0 ? mon : dead;
+function LilGuy({ onLowerHealth, creatureState }: LilGuyProps) {
+    const currentImage = creatureState === 'dead' ? dead : creatureState === 'alive' ? mon : egg;
 
     function handleLower() {
         if (onLowerHealth) onLowerHealth(100);
@@ -21,8 +22,7 @@ function LilGuy({ health, onLowerHealth }: LilGuyProps) {
         <div>
             <img src={currentImage} alt="Lil Guy" />
 
-            <div>Health: {health}</div>
-            <button onClick={handleLower} disabled={health <= 0} aria-label="Lower health">
+            <button onClick={handleLower} disabled={creatureState === 'dead'} aria-label="Lower health">
                 Lower health
             </button>
         </div>
