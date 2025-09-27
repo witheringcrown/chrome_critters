@@ -7,14 +7,13 @@ type LilGuyProps = {
     health: number;
     /** Called when the user requests to lower health. Optional for display-only usage. */
     onLowerHealth?: (amount?: number) => void;
+    setHealth: (health: number) => void;
 };
 
 function LilGuy({ health, onLowerHealth }: LilGuyProps) {
     const currentImage = health > 0 ? mon : dead;
 
     function handleLower() {
-        chrome.runtime.sendMessage({ event: "onSwitch" });
-        console.log("Lowering health");
         if (onLowerHealth) onLowerHealth(100);
     }
 

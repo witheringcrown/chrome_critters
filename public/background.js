@@ -3,8 +3,14 @@
 chrome.runtime.onMessage.addListener(data => {
     switch(data.event) {
         case "onSwitch":
-            console.log("He's Dead!");
+            handleOnSwitch(data.prefs);
             break;
-        
+        default:
+            break;
     }
 });
+
+function handleOnSwitch(prefs) {
+    console.log(prefs);
+    chrome.storage.local.set(prefs);
+}
