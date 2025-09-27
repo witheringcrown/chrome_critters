@@ -1,5 +1,5 @@
-import mon from './assets/image.png';
-import dead from './assets/grave.png';
+import mon from './assets/creature.gif';
+import dead from './assets/dead.gif';
 
 type LilGuyProps = {
     health: number;
