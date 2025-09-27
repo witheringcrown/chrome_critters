@@ -1,15 +1,33 @@
+import { useState } from 'react';
+
 type NameInputProps = {
-    onNameChange?: (newName: string) => void;
+  onNameChange?: (newName: string) => void;
 };
 
 export default function NameInput({ onNameChange }: NameInputProps) {
-  const userInput: string | null = window.prompt('Name your Chrome Creature:');
+  const [name, setName] = useState('');
 
-  if (userInput !== null && userInput.trim() !== "") {
-    const trimmed = userInput.trim();  
-    onNameChange?.(trimmed);
-    return ;
-  }
-  return <p>No name entered</p>;
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log('Submitted name:', name);
+
+    if (name.trim() !== "") {
+      const trimmed = name.trim();
+      onNameChange?.(trimmed);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
 }
-

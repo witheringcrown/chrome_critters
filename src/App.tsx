@@ -44,7 +44,7 @@ function App() {
   if (creatureState === 'ready') {
     return (
       <>
-        <NameInput onNameChange={handleNameChange}/> 
+        <NameInput onNameChange={handleNameChange} /> 
         <Namebar />
         <LilGuy onLowerHealth={lowerHealth} creatureState={creatureState}/>
         <button onClick={() => setCreatureState('egg')}>Go to egg</button>
