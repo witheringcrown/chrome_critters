@@ -51,6 +51,10 @@ function App() {
     chrome.storage.local.set({ creatureState: 'alive' });
   };
 
+  function restart() {
+    setCreatureState('ready');
+  }
+
   function handleSetTimer(){
     setCreatureState('focus');
     chrome.storage.local.set({ creatureState: 'focus' });
@@ -62,7 +66,7 @@ function App() {
       <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : 'mon'}/>
       {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer handleSetTimer={handleSetTimer}/> : null}
       {creatureState === 'focus' || creatureState === 'egg' ? <Timer /> : null}
-      {creatureState === 'dead' ? <Failed /> : null}
+      {creatureState === 'dead' ? <Failed startOver={restart}/> : null}
     </>
   );
   
