@@ -9,7 +9,7 @@ import Failed from './failed';
 
 function App() {
   const [name, setName] = useState('');
-  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
+  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'scrambled' | 'hatched' | 'alive' | 'focus' | 'dead'> ('hatched');
 
   useEffect(() => {
     chrome.storage.local.get("creatureState", (data) => {
@@ -18,11 +18,16 @@ function App() {
       }
     });
     chrome.storage.local.get("healthSave", (data) => {
+      chrome.storage.local.get("creatureState", (state) => {
       if (data.healthSave !== undefined && data.healthSave !== null) {
-        if (data.healthSave === 0) {
+        if (data.healthSave === 0 && state.creatureState === 'focus') {
           setCreatureState('dead');
         }
+        else if (data.healthSave === 0 && state.creatureState === 'egg'){
+          setCreatureState('scrambled');
+        }
       }
+    });
     });
     chrome.storage.local.get("creatureName", (data) => {
       if (data.creatureName !== undefined && data.creatureName !== null) {
@@ -75,7 +80,7 @@ function App() {
       <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : 'mon'}/>
       {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer handleSetTimer={handleSetTimer}/> : null}
       {creatureState === 'focus' || creatureState === 'egg' ? <Timer /> : null}
-      {creatureState === 'dead' ? <Failed startOver={restart}/> : null}
+      {creatureState === 'dead' || creatureState === 'scrambled' ? <Failed startOver={restart}/> : null}
     </>
   );
   
