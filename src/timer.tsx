@@ -1,22 +1,14 @@
 import { useState, useEffect } from "react";
 
 // Timer component
-export default function Timer() {
+function Timer() {
     const [time, setTime] = useState(0); 
 
     // Check alarm state and create alarm if enabled
     useEffect(() => {
         syncWithAlarm();
 
-        let interval: number | undefined;
-
-        if (time > 0) {
-        interval = window.setInterval(() => {
-            setTime((prev) => prev - 1);
-        }, 1000);
-        }
-
-    }); 
+    }, [time]); 
 
     // Function to start Chrome alarm
     async function syncWithAlarm() {
@@ -29,12 +21,13 @@ export default function Timer() {
             } else {
                 console.log("No alarm found, creating one.");                
             }
-    });
+        });
+    }
 
     // Calculate time
-        const hours = Math.floor(time / 3600);
-        const mins = Math.floor((time % 3600) / 60);
-        const secs = time % 60;
+    const hours = Math.floor(time / 3600);
+    const mins = Math.floor((time % 3600) / 60);
+    const secs = time % 60;
 
     return (
         <div className="timer-container">
@@ -43,6 +36,7 @@ export default function Timer() {
                 {secs.toString().padStart(2, "0")}
             </p>
         </div>
-        );
+    );
 }
-}
+
+export default Timer;
