@@ -1,6 +1,6 @@
 ## How to Use:
 
-After cloning the repo, you'll need to load one of the build files as an unpacked chrome extention:
+After cloning the repo, you'll need to load one of the build files as an unpacked chrome extension:
 [Tutorial Here](https://developer.chrome.com/docs/extensions/get-started/tutorial/hello-world#load-unpacked)
 
 ### The Different Builds
