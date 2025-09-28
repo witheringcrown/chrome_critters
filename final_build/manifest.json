@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "Chrome Creatures",
+    "version": "0.1",
+    "description": "A lil guy that dies if you stop focusing.",
+    "permissions": ["alarms", "storage", "tabs"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": "creature.png"
+    }
+}
