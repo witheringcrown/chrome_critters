@@ -10,7 +10,6 @@ export default function NameInput({ onNameChange }: NameInputProps) {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     console.log('Submitted name:', name);
-    chrome.storage.local.set({ creatureState: 'alive' });
 
     if (name.trim() !== "") {
       const trimmed = name.trim();
@@ -19,16 +18,20 @@ export default function NameInput({ onNameChange }: NameInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Name:
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </label>
-      <button type="submit">Submit</button>
-    </form>
+    <>
+      <h2>Your Critter Hatched! Give them a name.</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          <input
+            type="text"
+            value={name}
+            placeholder='Enter name'
+            onChange={(e) => setName(e.target.value)}
+          />
+        </label>
+        <button type="submit">Submit</button>
+      </form>
+    </>
+    
   );
 }
