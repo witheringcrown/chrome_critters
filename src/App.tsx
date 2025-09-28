@@ -14,10 +14,11 @@ function App() {
   useEffect(() => {
 
     function onStorageChange(changes: any, area: string) {
-    if (area === 'local' && changes.creatureState) {
-      setCreatureState(changes.creatureState.newValue);
-    }
+      if (area === 'local' && changes.creatureState) {
+        setCreatureState(changes.creatureState.newValue);
+      }
     };
+
     chrome.storage.onChanged.addListener(onStorageChange);
 
     chrome.storage.local.get("creatureState", (data) => {
@@ -25,18 +26,22 @@ function App() {
         setCreatureState(data.creatureState);
       }
     });
+
     chrome.storage.local.get("healthSave", (data) => {
       chrome.storage.local.get("creatureState", (state) => {
       if (data.healthSave !== undefined && data.healthSave !== null) {
-          if (data.healthSave === 0 && state.creatureState === 'focus') {
-            setCreatureState('dead');
-          }
-          else if (data.healthSave === 0 && state.creatureState === 'egg'){
-            setCreatureState('scrambled');
+          if (data.healthSave === 0) {
+            chrome.alarms.clearAll();
+            if (state.creatureState === 'focus') {
+              setCreatureState('dead');
+            } else {
+              setCreatureState('scrambled');
+            }
           }
         }
       });
     });
+
     chrome.storage.local.get("creatureName", (data) => {
       if (data.creatureName !== undefined && data.creatureName !== null) {
         setName(data.creatureName);
@@ -64,12 +69,14 @@ function App() {
     chrome.storage.local.set({ creatureState: 'alive' });
   };
 
-  function restart() {
+  async function restart() {
     setCreatureState('ready');
     setName('');
-    chrome.storage.local.set({ creatureState: 'ready' });
-    chrome.storage.local.set({ healthSave: 100 });
-    chrome.storage.local.remove('creatureName');
+
+    await chrome.storage.local.set({ creatureState: 'ready' });
+    await chrome.storage.local.set({ healthSave: 100 });
+    await chrome.storage.local.remove('creatureName');
+    await chrome.alarms.clearAll();
   }
 
   function handleSetTimer(){
