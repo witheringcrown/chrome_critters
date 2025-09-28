@@ -21,6 +21,7 @@ function App() {
     "#83769c",
     "#ff77a8"
   ];
+  const [totalTime, setTotalTime] = useState<number>(0);
 
   const [tint, setTint] = useState<string>(possibleTints[0]);
 
@@ -56,6 +57,12 @@ function App() {
       }
     });
 
+    chrome.storage.local.get("totalTime", (data) => {
+      if (data.totalTime !== undefined && data.totalTime !== null) {
+        setTotalTime(data.totalTime);
+      }
+    });
+
     chrome.storage.local.get("healthSave", (data) => {
       chrome.storage.local.get("creatureState", (state) => {
       if (data.healthSave !== undefined && data.healthSave !== null) {
@@ -78,6 +85,24 @@ function App() {
     });
     
   }, []);
+
+  // Update total time
+  useEffect(() => {
+    let interval: number | undefined;
+
+    if (creatureState === "focus") {
+      interval = window.setInterval(() => {
+        setTotalTime(prev => {
+          const updated = prev + 1;
+          chrome.storage.local.set({ totalTime: updated });
+          return updated;
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(interval);
+  }, [creatureState]);
+
 
   const handleNameChange = (newName: string) => {
     setName(newName);
@@ -123,6 +148,7 @@ function App() {
       {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer handleSetTimer={handleSetTimer}/> : null}
       {creatureState === 'focus' || creatureState === 'egg' ? <Timer passedTime={timeLeft} /> : null}
       {creatureState === 'dead' || creatureState === 'scrambled' ? <Failed startOver={restart}/> : null}
+      {(creatureState === 'alive' || creatureState === 'dead') && (<div className="total-time">Total Focus Time: {totalTime} seconds</div>)}
     </>
   );
   

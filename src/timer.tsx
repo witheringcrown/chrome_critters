@@ -14,18 +14,18 @@ function Timer({ passedTime }: TimerProps) {
 
     }, []); 
 
-    // Decrease timer every second
+    // Decrement Timer
     useEffect(() => {
         if (time <= 0) return;
 
         const interval = setInterval(() => {
-            setTime(prev => prev - 1);
+            setTime(prev => Math.max(prev - 1, 0));
         }, 1000);
 
         return () => clearInterval(interval);
     }, [time]);
 
-    // Function to start Chrome alarm
+    // Start chrome alarm
     async function syncWithAlarm() {
         chrome.alarms.get("focusAlarm", function(alarm) {
             if (alarm) {
