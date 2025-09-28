@@ -13,15 +13,13 @@ function App() {
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const possibleTints = [
     "#ffffff",
-    "#ffd6e8",
-    "#d4f4ff",
-    "#ffe8a3",
-    "#c4f4c4",
-    "#f6d2ff",
-    "#ffe4c4",
-    "#ffb7c5",
-    "#d7f0ff",
-    "#e0ffcc",
+    "#ff004d",
+    "#ffa300",
+    "#ffec27",
+    "#00e436",
+    "#29adff",
+    "#83769c",
+    "#ff77a8"
   ];
 
   const [tint, setTint] = useState<string>(possibleTints[0]);
