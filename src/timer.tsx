@@ -2,74 +2,47 @@ import { useState, useEffect } from "react";
 
 // Timer component
 export default function Timer() {
-    const [time, setTime] = useState(15 * 60); // 15 minutes in seconds
+    const [time, setTime] = useState(0); 
 
-// Check alarm state and create alarm if enabled
-
+    // Check alarm state and create alarm if enabled
     useEffect(() => {
+        syncWithAlarm();
 
-    }, []);
+        let interval: number | undefined;
 
-    // calculate time
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = time % 60;
+        if (time > 0) {
+        interval = window.setInterval(() => {
+            setTime((prev) => prev - 1);
+        }, 1000);
+        }
 
-    // Method to start and stop timer
-    const startFocus = () => {
-        startAlarm((time + 59) / 60); // Round up to the nearest minute
-    };
-    const reset = () => {
-       setTime(15 * 60);
-       chrome.alarms.clear("focusAlarm");
-    };
-    const addFiveMinutes = () => {
-        setTime(time + 1 * 60);
-    };
-    const subFiveMinutes = () => {
-        setTime(Math.max(0, time - 5 * 60));
-    };
+    }); 
 
     // Function to start Chrome alarm
-    async function startAlarm(minutes: number) {
-        try {
-            const alarm = await chrome.alarms.get("focusAlarm");
-
-            if (!alarm) {
-                await chrome.alarms.create("focusAlarm", { delayInMinutes: (time / 60)});
+    async function syncWithAlarm() {
+        chrome.alarms.get("focusAlarm", function(alarm) {
+            if (alarm) {
+                const currentTime = Date.now();
+                const scheduledTime = alarm.scheduledTime;
+                const remainingTimeMs = scheduledTime - currentTime;
+                setTime(Math.max(0, Math.floor(remainingTimeMs / 1000)));
             } else {
-                // Reset it anyway
-                await chrome.alarms.clear("focusAlarm");
-                await chrome.alarms.create("focusAlarm", { delayInMinutes: (time / 60)});
+                console.log("No alarm found, creating one.");                
             }
-            console.log("Alarm set for", (time / 60), "minutes");
+    });
 
-            await chrome.storage.local.set({ focusEndTime: minutes * 60 * 1000 + Date.now() });
-        } catch (err) {
-            console.error("Failed to start or update alarm:", err);
-        }
-    }
+    // Calculate time
+        const hours = Math.floor(time / 3600);
+        const mins = Math.floor((time % 3600) / 60);
+        const secs = time % 60;
 
     return (
         <div className="timer-container">
             <p className="timer-time">
-                {hours}:{minutes.toString().padStart(2, "0")}:
-                {seconds.toString().padStart(2, "0")}
+                {hours}:{mins.toString().padStart(2, "0")}:
+                {secs.toString().padStart(2, "0")}
             </p>
-            <div className="stopwatch-buttons">
-                <button className="stopwatch-button" onClick={subFiveMinutes}>
-                    -5 minutes
-                </button>
-                <button className="stopwatch-button" onClick={startFocus}>
-                    Focus on This Tab
-                </button>
-                <button className="stopwatch-button" onClick={addFiveMinutes}>
-                    +5 minutes
-                </button>
-                <button className="stopwatch-button" onClick={reset}>
-                    Reset
-                </button>
-            </div>
         </div>
         );
+}
 }
