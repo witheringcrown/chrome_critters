@@ -14,8 +14,32 @@ function LilGuy({ imageState, tint }: LilGuyProps) {
     const currentImage = imageState === 'dead' ? dead : imageState === 'mon' ? mon : imageState === 'scrambled' ? scrambled : egg;
 
     return (
-        <div>
-            <img src={currentImage} alt="Lil Guy" style={{ filter: `drop-shadow(0 0 5px ${tint})` }} />
+        <div style={{ position: 'relative', display: 'inline-block' }}>
+            <img
+                src={currentImage}
+                alt="Lil Guy"
+                style={{ display: 'block', width: '100%', height: 'auto' }}
+            />
+            {tint && (
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: tint,
+                        // 💡 Use the image as a mask so the tint matches visible pixels only
+                        WebkitMaskImage: `url(${currentImage})`,
+                        WebkitMaskRepeat: 'no-repeat',
+                        WebkitMaskSize: 'contain',
+                        maskImage: `url(${currentImage})`,
+                        maskRepeat: 'no-repeat',
+                        maskSize: 'contain',
+                        pointerEvents: 'none',
+                    }}
+                />
+            )}
         </div>
     );
 }

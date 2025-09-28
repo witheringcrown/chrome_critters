@@ -11,7 +11,19 @@ function App() {
   const [name, setName] = useState('');
   const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'scrambled' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
   const [timeLeft, setTimeLeft] = useState<number>(0);
-  const possibleTints = ["#ffffff", "#d99790ff", "#a4cfebff", "#e9ed79ff", "#98ed79ff", "#e7b7ecff", "#e2c080ff"];
+  const possibleTints = [
+    "#ffffff",
+    "#ffd6e8",
+    "#d4f4ff",
+    "#ffe8a3",
+    "#c4f4c4",
+    "#f6d2ff",
+    "#ffe4c4",
+    "#ffb7c5",
+    "#d7f0ff",
+    "#e0ffcc",
+  ];
+
   const [tint, setTint] = useState<string>(possibleTints[0]);
 
   function getRandomTint() {
@@ -25,12 +37,20 @@ function App() {
       if (area === 'local' && changes.creatureState) {
         setCreatureState(changes.creatureState.newValue);
         if (changes.creatureState.newValue === 'hatched') {
-          setTint(getRandomTint());
+          const newTint = getRandomTint();
+          setTint(newTint);
+          chrome.storage.local.set({ tint: newTint });
         }
       }
     };
 
     chrome.storage.onChanged.addListener(onStorageChange);
+
+    chrome.storage.local.get("tint", (data) => {
+      if (data.tint !== undefined && data.tint !== null) {
+        setTint(data.tint);
+      }
+    });
 
     chrome.storage.local.get("creatureState", (data) => {
       if (data.creatureState !== undefined && data.creatureState !== null) {
@@ -71,7 +91,9 @@ function App() {
   async function restart() {
     setCreatureState('ready');
     setName('');
+    setTint(possibleTints[0]);
 
+    await chrome.storage.local.set({ tint: possibleTints[0] });
     await chrome.storage.local.set({ creatureState: 'ready' });
     await chrome.storage.local.set({ healthSave: 100 });
     await chrome.storage.local.remove('creatureName');
