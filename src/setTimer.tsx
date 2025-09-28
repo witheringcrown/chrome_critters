@@ -18,10 +18,10 @@ function SetTimer({ handleSetTimer }: SetTimerProps) {
         handleSetTimer();
     };
     const addFiveMinutes = () => {
-        setTime(time + 5 * 60); 
+        setTime(time + 10); 
     };
     const subFiveMinutes = () => {
-        setTime(Math.max(0, time - 5 * 60));
+        setTime(Math.max(0, time - 10));
     };
 
     // Function to start Chrome alarm
@@ -52,13 +52,13 @@ function SetTimer({ handleSetTimer }: SetTimerProps) {
             </p>
             <div className="stopwatch-buttons">
                 <button className="stopwatch-button" onClick={subFiveMinutes}>
-                    -5:00
+                    -0:10
                 </button>
                 <button className="stopwatch-button" onClick={startFocus} disabled={time === 0}>
                     Focus on This Tab
                 </button>
                 <button className="stopwatch-button" onClick={addFiveMinutes}>
-                    +5:00
+                    +0:10
                 </button>
             </div>
         </div>
