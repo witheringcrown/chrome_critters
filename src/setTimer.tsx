@@ -5,7 +5,7 @@ type SetTimerProps = {
 };
 
 function SetTimer({ handleSetTimer }: SetTimerProps) {
-    const [time, setTime] = useState(15 * 60); // 15 minutes in seconds
+    const [time, setTime] = useState(1 * 60); // 15 minutes in seconds
 
     // calculate time
     const hours = Math.floor(time / 3600);
