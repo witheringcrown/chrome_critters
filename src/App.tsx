@@ -56,6 +56,11 @@ function App() {
   }
 
   function handleSetTimer(){
+    if (creatureState === 'ready'){
+      setCreatureState('egg');
+      chrome.storage.local.set({ creatureState: 'egg' });
+      return;
+    }
     setCreatureState('focus');
     chrome.storage.local.set({ creatureState: 'focus' });
   }

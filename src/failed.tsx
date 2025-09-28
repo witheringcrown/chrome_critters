@@ -3,7 +3,7 @@ function Failed({ startOver }: { startOver: () => void } ) {
         <>
             <p>Oh no! Your creature has run out of health and passed away.</p>
             <button className="restart-button" onClick={startOver}>
-                    Restart
+                Restart
             </button>
         </>
     );
