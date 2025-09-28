@@ -18,7 +18,7 @@ function SetTimer({ handleSetTimer }: SetTimerProps) {
         handleSetTimer();
     };
     const addFiveMinutes = () => {
-        setTime(time + 1 * 60);
+        setTime(time + 1);
     };
     const subFiveMinutes = () => {
         setTime(Math.max(0, time - 5 * 60));

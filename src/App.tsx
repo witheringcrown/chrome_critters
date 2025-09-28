@@ -12,6 +12,14 @@ function App() {
   const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'scrambled' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
 
   useEffect(() => {
+
+    function onStorageChange(changes: any, area: string) {
+    if (area === 'local' && changes.creatureState) {
+      setCreatureState(changes.creatureState.newValue);
+    }
+    };
+    chrome.storage.onChanged.addListener(onStorageChange);
+
     chrome.storage.local.get("creatureState", (data) => {
       if (data.creatureState !== undefined && data.creatureState !== null) {
         setCreatureState(data.creatureState);
@@ -20,14 +28,14 @@ function App() {
     chrome.storage.local.get("healthSave", (data) => {
       chrome.storage.local.get("creatureState", (state) => {
       if (data.healthSave !== undefined && data.healthSave !== null) {
-        if (data.healthSave === 0 && state.creatureState === 'focus') {
-          setCreatureState('dead');
+          if (data.healthSave === 0 && state.creatureState === 'focus') {
+            setCreatureState('dead');
+          }
+          else if (data.healthSave === 0 && state.creatureState === 'egg'){
+            setCreatureState('scrambled');
+          }
         }
-        else if (data.healthSave === 0 && state.creatureState === 'egg'){
-          setCreatureState('scrambled');
-        }
-      }
-    });
+      });
     });
     chrome.storage.local.get("creatureName", (data) => {
       if (data.creatureName !== undefined && data.creatureName !== null) {
