@@ -52,13 +52,13 @@ function SetTimer({ handleSetTimer }: SetTimerProps) {
             </p>
             <div className="stopwatch-buttons">
                 <button className="stopwatch-button" onClick={subFiveMinutes}>
-                    -5 minutes
+                    -5:00
                 </button>
                 <button className="stopwatch-button" onClick={startFocus} disabled={time === 0}>
                     Focus on This Tab
                 </button>
                 <button className="stopwatch-button" onClick={addFiveMinutes}>
-                    +5 minutes
+                    +5:00
                 </button>
             </div>
         </div>
