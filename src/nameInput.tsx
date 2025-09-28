@@ -19,7 +19,7 @@ export default function NameInput({ onNameChange }: NameInputProps) {
 
   return (
     <>
-      <h2>Your Critter Hatched! Give them a name.</h2>
+      <h2>Your critter hatched! Give them a name.</h2>
       <form onSubmit={handleSubmit}>
         <label>
           <input
