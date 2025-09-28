@@ -9,7 +9,7 @@ import Failed from './failed';
 
 function App() {
   const [name, setName] = useState('');
-  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'hatched' | 'alive' | 'focus' | 'dead'> ('hatched');
+  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
 
   useEffect(() => {
     chrome.storage.local.get("creatureState", (data) => {
@@ -53,6 +53,10 @@ function App() {
 
   function restart() {
     setCreatureState('ready');
+    setName('');
+    chrome.storage.local.set({ creatureState: 'ready' });
+    chrome.storage.local.set({ healthSave: 100 });
+    chrome.storage.local.remove('creatureName');
   }
 
   function handleSetTimer(){
