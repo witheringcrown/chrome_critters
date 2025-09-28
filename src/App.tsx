@@ -46,13 +46,17 @@ function App() {
     chrome.storage.local.set({ creatureState: 'alive' });
   };
 
+  function restart() {
+    setCreatureState('ready');
+  }
+
   return (
     <>
       {creatureState === 'hatched' ? <NameInput onNameChange={handleNameChange}/> : <Namebar name={name}/>}
       <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : 'mon'}/>
       {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer /> : null}
       {creatureState === 'focus' || creatureState === 'egg' ? <Timer /> : null}
-      {creatureState === 'dead' ? <Failed /> : null}
+      {creatureState === 'dead' ? <Failed startOver={restart}/> : null}
     </>
   );
   
