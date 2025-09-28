@@ -10,6 +10,7 @@ import Failed from './failed';
 function App() {
   const [name, setName] = useState('');
   const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'scrambled' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
+  const [timeLeft, setTimeLeft] = useState<number>(0);
 
   useEffect(() => {
 
@@ -76,10 +77,17 @@ function App() {
     await chrome.storage.local.set({ creatureState: 'ready' });
     await chrome.storage.local.set({ healthSave: 100 });
     await chrome.storage.local.remove('creatureName');
-    await chrome.alarms.clearAll();
   }
 
-  function handleSetTimer(){
+  async function handleSetTimer() {
+    const focusAlarm = await chrome.alarms.get("focusAlarm");
+    const currentTime = Date.now();
+    const scheduledTime = focusAlarm?.scheduledTime || 0;
+    const remainingTimeMs = scheduledTime - currentTime;
+    const newTimeLeft = Math.max(0, Math.floor(remainingTimeMs / 1000));
+
+    setTimeLeft(newTimeLeft); // update the state here
+
     if (creatureState === 'ready'){
       setCreatureState('egg');
       chrome.storage.local.set({ creatureState: 'egg' });
@@ -89,12 +97,13 @@ function App() {
     chrome.storage.local.set({ creatureState: 'focus' });
   }
 
+
   return (
     <>
-      {creatureState === 'hatched' ? <NameInput onNameChange={handleNameChange}/> : <Namebar name={name}/>}
+      {creatureState === 'hatched' ? <NameInput onNameChange={handleNameChange}/> : name === '' ? null : <Namebar name={name}/>}
       <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : creatureState === 'scrambled' ? 'scrambled' : 'mon'}/>
       {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer handleSetTimer={handleSetTimer}/> : null}
-      {creatureState === 'focus' || creatureState === 'egg' ? <Timer /> : null}
+      {creatureState === 'focus' || creatureState === 'egg' ? <Timer passedTime={timeLeft} /> : null}
       {creatureState === 'dead' || creatureState === 'scrambled' ? <Failed startOver={restart}/> : null}
     </>
   );

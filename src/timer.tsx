@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 
+type TimerProps = {
+    passedTime?: number;
+};
+
 // Timer component
-function Timer() {
-    const [time, setTime] = useState(0); 
+function Timer({ passedTime }: TimerProps) {
+    const [time, setTime] = useState(passedTime || 0);
 
     // Check alarm state and create alarm if enabled
     useEffect(() => {
