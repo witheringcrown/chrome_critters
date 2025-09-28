@@ -11,12 +11,22 @@ function App() {
   const [name, setName] = useState('');
   const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'scrambled' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
   const [timeLeft, setTimeLeft] = useState<number>(0);
+  const possibleTints = ["#ffffff", "#d99790ff", "#a4cfebff", "#e9ed79ff", "#98ed79ff", "#e7b7ecff", "#e2c080ff"];
+  const [tint, setTint] = useState<string>(possibleTints[0]);
+
+  function getRandomTint() {
+    const randomIndex = Math.floor(Math.random() * possibleTints.length);
+    return possibleTints[randomIndex];
+  }
 
   useEffect(() => {
 
     function onStorageChange(changes: any, area: string) {
       if (area === 'local' && changes.creatureState) {
         setCreatureState(changes.creatureState.newValue);
+        if (changes.creatureState.newValue === 'hatched') {
+          setTint(getRandomTint());
+        }
       }
     };
 
@@ -101,7 +111,8 @@ function App() {
   return (
     <>
       {creatureState === 'hatched' ? <NameInput onNameChange={handleNameChange}/> : name === '' ? null : <Namebar name={name}/>}
-      <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : creatureState === 'scrambled' ? 'scrambled' : 'mon'}/>
+      <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : creatureState === 'scrambled' ? 'scrambled' : 'mon'}
+        tint={tint}/>
       {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer handleSetTimer={handleSetTimer}/> : null}
       {creatureState === 'focus' || creatureState === 'egg' ? <Timer passedTime={timeLeft} /> : null}
       {creatureState === 'dead' || creatureState === 'scrambled' ? <Failed startOver={restart}/> : null}
