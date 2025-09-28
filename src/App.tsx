@@ -77,7 +77,7 @@ function App() {
   return (
     <>
       {creatureState === 'hatched' ? <NameInput onNameChange={handleNameChange}/> : <Namebar name={name}/>}
-      <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : 'mon'}/>
+      <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : creatureState === 'scrambled' ? 'scrambled' : 'mon'}/>
       {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer handleSetTimer={handleSetTimer}/> : null}
       {creatureState === 'focus' || creatureState === 'egg' ? <Timer /> : null}
       {creatureState === 'dead' || creatureState === 'scrambled' ? <Failed startOver={restart}/> : null}
