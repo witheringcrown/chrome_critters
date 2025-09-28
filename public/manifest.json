@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Chrome Critters",
-    "version": "0.1",
+    "version": "1.0",
     "description": "A lil guy that dies if you stop focusing.",
     "permissions": ["alarms", "storage", "tabs"],
     "background": {

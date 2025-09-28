@@ -115,10 +115,12 @@ function App() {
     setCreatureState('ready');
     setName('');
     setTint(possibleTints[0]);
+    setTotalTime(0);
 
     await chrome.storage.local.set({ tint: possibleTints[0] });
     await chrome.storage.local.set({ creatureState: 'ready' });
     await chrome.storage.local.set({ healthSave: 100 });
+    await chrome.storage.local.set({ totalTime: 0 });
     await chrome.storage.local.remove('creatureName');
   }
 
