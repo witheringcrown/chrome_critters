@@ -8,7 +8,18 @@ function Timer() {
     useEffect(() => {
         syncWithAlarm();
 
-    }, [time]); 
+    }, []); 
+
+    // Decrease timer every second
+    useEffect(() => {
+        if (time <= 0) return;
+
+        const interval = setInterval(() => {
+            setTime(prev => prev - 1);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [time]);
 
     // Function to start Chrome alarm
     async function syncWithAlarm() {

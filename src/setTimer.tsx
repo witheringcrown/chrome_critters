@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
-function SetTimer() {
+type SetTimerProps = {
+    handleSetTimer: () => void;
+};
+
+function SetTimer({ handleSetTimer }: SetTimerProps) {
     const [time, setTime] = useState(15 * 60); // 15 minutes in seconds
 
     // calculate time
@@ -11,6 +15,7 @@ function SetTimer() {
     // Method to start and stop timer
     const startFocus = () => {
         startAlarm((time + 59) / 60); // Round up to the nearest minute
+        handleSetTimer();
     };
     const addFiveMinutes = () => {
         setTime(time + 1 * 60);
