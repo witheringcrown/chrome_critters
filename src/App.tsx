@@ -51,18 +51,6 @@ function App() {
     
   }, []);
 
-  // We don't need this rn but we may later?
-  // function lowerHealth(amount = 10) {
-  //   const newHealth = Math.max(0, health - amount);
-  //   setHealth(newHealth);
-  //   if (newHealth === 0) {
-  //     setCreatureState('dead');
-  //     chrome.storage.local.set({ creatureState: 'dead' });
-  //   }
-  //   chrome.storage.local.set({ healthSave: newHealth });
-  // }
-
-
   const handleNameChange = (newName: string) => {
     setName(newName);
     setCreatureState('alive');
@@ -96,7 +84,6 @@ function App() {
     setCreatureState('focus');
     chrome.storage.local.set({ creatureState: 'focus' });
   }
-
 
   return (
     <>
