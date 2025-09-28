@@ -11,7 +11,13 @@ chrome.tabs.onActivated.addListener(async () => {
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-    if (alarm.name === "focusAlarm") {
-        console.log("Focus alarm triggered");
+    try {
+        const { creatureState } = await chrome.storage.local.get("creatureState");
+
+        const newState = (creatureState === "focus") ? "alive" : "hatched";
+        await chrome.storage.local.set({ creatureState: newState });
+
+    } catch (error) {
+        console.error("Failed to handle alarm:", error);
     }
 });

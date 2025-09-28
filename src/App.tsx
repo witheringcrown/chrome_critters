@@ -9,7 +9,7 @@ import Failed from './failed';
 
 function App() {
   const [name, setName] = useState('');
-  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'scrambled' | 'hatched' | 'alive' | 'focus' | 'dead'> ('hatched');
+  const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'scrambled' | 'hatched' | 'alive' | 'focus' | 'dead'> ('ready');
 
   useEffect(() => {
     chrome.storage.local.get("creatureState", (data) => {
