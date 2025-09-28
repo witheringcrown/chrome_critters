@@ -8,6 +8,7 @@ import SetTimer from './setTimer';
 import Failed from './failed';
 
 function App() {
+  const [name, setName] = useState('');
   const [creatureState, setCreatureState] = useState<'ready' | 'egg' | 'hatched' | 'alive' | 'focus' | 'dead'> ('hatched');
 
   useEffect(() => {
@@ -39,12 +40,15 @@ function App() {
 
 
   const handleNameChange = (newName: string) => {
+    setName(newName);
+    setCreatureState('alive');
     chrome.storage.local.set({ creatureName: newName });
+    chrome.storage.local.set({ creatureState: 'alive' });
   };
 
   return (
     <>
-      {creatureState === 'hatched' ? <NameInput onNameChange={handleNameChange}/> : <Namebar />}
+      {creatureState === 'hatched' ? <NameInput onNameChange={handleNameChange}/> : <Namebar name={name}/>}
       <LilGuy imageState={creatureState === 'dead' ? 'dead' : creatureState === 'ready' || creatureState === 'egg' ? 'egg' : 'mon'}/>
       {creatureState === 'ready' || creatureState === 'alive' ? <SetTimer /> : null}
       {creatureState === 'focus' || creatureState === 'egg' ? <Timer /> : null}
